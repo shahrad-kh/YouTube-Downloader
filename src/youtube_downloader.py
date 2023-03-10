@@ -21,19 +21,21 @@ class youtube_video:
         path = Path(path)
         yt = YouTube(self.url, on_progress_callback=op)
 
-        if(only_audio):
+        if (only_audio):
             yt.streams.filter(only_audio=True).first().download(path)
         else:
-            yt.streams.get_lowest_resolution().download(path)
+            yt.streams.get_highest_resolution().download(path)
 
         print(f'{yt.title} downloaded at {path}')
 
 
 if __name__ == '__main__':
     video = youtube_video(input('Enter youtube video url: '))
-    type_ = input('Download audio only? (y/n): ')
+    type_ = input('Download audio only? (yes/no): ')
     path = input('Enter path to download: ')
-    if(type_ == 'y'):
+    if (type_ == 'yes'):
         video.download(path, only_audio=True)
-    else:
+    elif (type_ == 'no'):
         video.download(path)
+    else:
+        raise ValueError('the answer should be yes or no')
